@@ -1,60 +1,85 @@
-# ViteJs + JS + Webflow = ❤️
+# Apple Popup Slider
 
-This is a basic setup with [ViteJs](https://vitejs.dev/) that you can use for your Webflow website.
-`jQuery` is already installed and declared as an external dependency.
+Here is the Code for the swiper slider:
 
-I'm using [Netlify](https://www.netlify.com/) to build and host my code because it's easy to use, free, and has serverless functions out of the box. Feel free to use your favorite CDN.
+<head> tag:
 
-**If you prefer TypeScript you can use [this template](https://github.com/armandsalle/vite-typescript-webflow)**
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+<!-- [Attributes by Finsweet] Disable scrolling -->
+<script defer src="https://cdn.jsdelivr.net/npm/@finsweet/attributes-scrolldisable@1/scrolldisable.js"></script>
 
-<br />
 
-## Live demo
+before <body> tag:
 
-You can find a simple example of a Webflow site using this setup [here](https://vite-javascript.webflow.io/). The code is hosted on Netlify [here](https://vite-javascript-webflow.netlify.app/main.js). If you want to see the Webflow preview, it's [here](https://preview.webflow.com/preview/vite-javascript?utm_medium=preview_link&utm_source=designer&utm_content=vite-javascript&preview=65fac120c82ee6a81780f5a5cd5ecc59&workflow=preview) 👍
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
-<br />
+<script>
+  // Select all elements that have the attribute swiper="slider"
+  var sliders = document.querySelectorAll('[swiper="slider"]');
 
-## How to use with Webflow
+  // Only proceed if there are sliders on the page
+  if (sliders.length > 0) {
+    sliders.forEach(function (sliderElement) {
+      // Find the next and prev buttons relative to the current slider element
+      var nextButton = sliderElement.parentElement.querySelector('[swiper="next"]');
+      var prevButton = sliderElement.parentElement.querySelector('[swiper="prev"]');
 
-### 🇫🇷 French
-The doc is [here](https://github.com/armandsalle/vite-javascript-webflow/blob/main/HowToUse_JS_FR.md) 
+      // Check if nextButton and prevButton exist before initializing Swiper
+      if (nextButton && prevButton) { 
+        // Initialize Swiper for the current section using the corresponding navigation buttons 
+        var swiper = new Swiper(sliderElement, { 
+          slidesPerView: 4, // Default to 3 slides per view (desktop) 
+          spaceBetween: 16, // Optional: space between slides in px
+          speed: 600, // Slide transition speed in milliseconds (1000ms = 1 second)
+          navigation: {
+            nextEl: nextButton,
+            prevEl: prevButton,
+          },
+          breakpoints: {
+            // when window width is >= 1024px (desktop)
+            992: {
+              slidesPerView: 4,
+              spaceBetween: 16,
+            },
+            // when window width is >= 768px (tablet)
+            478: {
+              slidesPerView: 2,
+              spaceBetween: 16,
+            },
+            // when window width is < 768px (mobile)
+            0: {
+              slidesPerView: 1.3,
+              spaceBetween: 10,
+            },
+          },
+          on: {
+            init: function () {
+              updateNavigationButtons(this, nextButton, prevButton); // Pass swiper instance and buttons to function
+            },
+            slideChange: function () {
+              updateNavigationButtons(this, nextButton, prevButton); // Update buttons on slide change
+            },
+          },
+        });
+      }
+    });
+  }
 
-### 🇬🇧 English
-The doc is [here](https://github.com/armandsalle/vite-javascript-webflow/blob/main/HowToUse_JS_EN.md) 
+  // Function to update navigation buttons' active/inactive state
+  function updateNavigationButtons(swiperInstance, nextButton, prevButton) {
+    // Check if swiperInstance is at the last slide
+    if (swiperInstance.isEnd) {
+      nextButton.classList.add('swiper-button-inactive');
+    } else {
+      nextButton.classList.remove('swiper-button-inactive');
+    }
 
-<br />
-
-## Building and running on localhost
-
-This project is using `yarn`.
-
-First, install dependencies:
-
-```sh
-yarn
-```
-
-To launch a local dev server:
-
-```sh
-yarn dev
-```
-
-To create a production build:
-
-```sh
-yarn build
-```
-
-To clean the local `/dist` folder:
-
-```sh
-yarn clean
-```
-
-To lint the code with ESLint and Prettier:
-
-```sh
-yarn lint:fix
-```
+    // Check if swiperInstance is at the first slide
+    if (swiperInstance.isBeginning) {
+      prevButton.classList.add('swiper-button-inactive');
+    } else {
+      prevButton.classList.remove('swiper-button-inactive');
+    }
+  }
+  
+</script>
