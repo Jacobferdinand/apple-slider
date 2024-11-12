@@ -13,15 +13,16 @@ export default defineConfig({
     },
   },
   build: {
-    minify: true,
-    manifest: true,
     rollupOptions: {
-      input: './src/main.js',
+      input: {
+        main: './src/main.js',
+      },
       output: {
-        format: 'umd',
-        entryFileNames: 'main.js',
-        esModule: false,
-        compact: true,
+        dir: 'dist',
+        format: 'es',
+        entryFileNames: '[name].js',
+        sourcemap: true,
+        inlineDynamicImports: false,
         globals: {
           jquery: '$',
         },
