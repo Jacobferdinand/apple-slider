@@ -2,14 +2,19 @@
 
 Here is the Code for the swiper slider:
 
+
+
 <head> tag:
+
 
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 <!-- [Attributes by Finsweet] Disable scrolling -->
 <script defer src="https://cdn.jsdelivr.net/npm/@finsweet/attributes-scrolldisable@1/scrolldisable.js"></script>
 
 
+
 before <body> tag:
+
 
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
